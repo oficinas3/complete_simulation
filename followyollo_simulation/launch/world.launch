@@ -1,0 +1,89 @@
+<?xml version="1.0" ?>
+
+<launch>
+    <arg name="debug" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="pause" default="false"/>
+    <arg name="world" default="$(find followyollo_simulation)/worlds/mercado.world"/>
+
+
+    <!-- Position for obstacles -->
+    <arg name="x_pos_obstacle" default="5.5"/>
+    <arg name="y_pos_obstacle" default="1"/>
+    <arg name="z_pos_obstacle" default="1"/>
+    
+    <arg name="x_pos_obstacle_2" default="2.5"/>
+    <arg name="y_pos_obstacle_2" default="1"/>
+    <arg name="z_pos_obstacle_2" default="1"/>
+    <arg name="obst_2_dim" default="0.15"/>
+
+    <!-- Position arguments for robot -->
+    <arg name="x_pos" default="10"/>
+    <arg name="y_pos" default="-6"/>
+    <arg name="z_pos" default="0.571"/>
+
+    <!-- Position for other robots -->
+    <arg name="y_pos_2" default="-6.6"/>
+    <arg name="y_pos_3" default="-7.2"/>
+
+    <!-- Position arguments for person -->
+    <arg name="x_pos_person" default="9"/>
+    <arg name="y_pos_person" default="-6"/>
+    <arg name="z_pos_person" default="1"/>
+    <arg name="artag_1" default="package://followyollo_simulation/meshes/ARTag0.dae"/>
+
+    <!-- Position arguments for static person -->
+    <arg name="x_pos_static_person" default="-4.5"/>
+    <arg name="y_pos_static_person" default="1"/>
+    <arg name="z_pos_static_person" default="1"/>
+
+    <arg name="artag_2" default="package://followyollo_simulation/meshes/ARTag13.dae"/>
+
+
+    <!-- Launch world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="paused" value="$(arg pause)"/>
+        <arg name="use_sim_time" value="true"/>
+    </include>
+
+
+    <!-- Launch obstacles -->
+    <group ns="obstacle_1">
+        <param name="obstacle_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/obstacle.urdf.xacro" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model obstacle_1 -x $(arg x_pos_obstacle) -y $(arg y_pos_obstacle) -z $(arg z_pos_obstacle)  -param obstacle_description" />
+    </group>
+
+    <group ns="obstacle_2">
+        <param name="obstacle_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/obstacle.urdf.xacro height:=$(arg obst_2_dim) width:=$(arg obst_2_dim)" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model obstacle_2 -x $(arg x_pos_obstacle_2) -y $(arg y_pos_obstacle_2) -z $(arg z_pos_obstacle_2)  -param obstacle_description" />
+    </group>
+
+    <!-- Launch static person -->
+    <group ns="static_person">
+        <param name="person_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/person.urdf.xacro artag:=$(arg artag_2)" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model static_person -x $(arg x_pos_static_person) -y $(arg y_pos_static_person) -z $(arg z_pos_static_person) -Y -1.57 -param person_description" />
+    </group>
+
+    <group ns="person">
+        <param name="person_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/person.urdf.xacro artag:=$(arg artag_1)" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model person -x $(arg x_pos_person) -y $(arg y_pos_person) -z $(arg z_pos_person) -Y 3.14 -param person_description" />
+    </group>
+
+
+    <!-- Robot spawners -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/followyolo.urdf.xacro" />
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model followyolo -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -Y 3.14 -param robot_description" />
+
+    <group ns="robot_02">
+        <param name="robot_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/followyolo.urdf.xacro" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model followyollo2 -x $(arg x_pos) -y $(arg y_pos_2) -z $(arg z_pos) -Y 3.14  -param robot_description" />
+    </group>
+    <group ns="robot_03">
+        <param name="robot_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/followyolo.urdf.xacro" />
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model followyollo3 -x $(arg x_pos) -y $(arg y_pos_3) -z $(arg z_pos) -Y 3.14  -param robot_description" />
+    </group>
+
+</launch>
