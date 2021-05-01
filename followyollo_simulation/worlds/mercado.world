@@ -108,7 +108,7 @@
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
-              <uri>/home/victor/catkin_ws/src/followyollo_simulation/meshes/mercadinho.dae</uri>
+              <uri>/home/biga/ws1/src/followyollo_simulation/meshes/mercadinho.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -135,7 +135,7 @@
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
-              <uri>/home/victor/catkin_ws/src/followyollo_simulation/meshes/mercadinho.dae</uri>
+              <uri>/home/biga/ws1/src/followyollo_simulation/meshes/mercadinho.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
