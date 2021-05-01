@@ -5,7 +5,7 @@ import rospy
 import actionlib
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Pose
 
 def movebase_client():
 
@@ -13,21 +13,24 @@ def movebase_client():
     client.wait_for_server()
     while not rospy.is_shutdown():
         rospy.loginfo("Esperando mensagem no /govai")
-        point = rospy.wait_for_message('/govai', Point)
+        pose = rospy.wait_for_message('/govai', Pose)
+        
         # rospy.loginfo("Esperando odometria")
         # odometry = rospy.wait_for_message('/odom', Odometry)
         goal = MoveBaseGoal()
-        goal.target_pose.pose.position.x = point.x
-        goal.target_pose.pose.position.y = point.y
-        goal.target_pose.pose.orientation.w = 1
+        goal.target_pose.pose.position.x = pose.position.x
+        goal.target_pose.pose.position.y = pose.position.y
+        
 
-        if point.z == 0:
+        if pose.position.z == 0:
+            client.cancel_all_goals()
+            goal.target_pose.pose.orientation.w = 1
             rospy.loginfo("Movendo relativo")
             goal.target_pose.header.frame_id = "base_footprint"
             goal.target_pose.header.stamp = rospy.Time.now()
             client.send_goal(goal)
-            wait = client.wait_for_result()
-        elif point.z == 1:
+        elif pose.position.z == 1:
+            goal.target_pose.pose.orientation.w = 1
             rospy.loginfo("Movendo absoluto")
             goal.target_pose.header.frame_id = "map"
             goal.target_pose.header.stamp = rospy.Time.now()

@@ -1,5 +1,10 @@
 <?xml version="1.0" ?>
 <launch>
     <include file="$(find followyollo_simulation)/launch/world.launch"/>
+    <include file="$(find followyollo_simulation)/launch/alvar.launch"/>
+    <include file="$(find move_base_yolo)/launch/navigation.launch"/> 
+
+    <node name="follow_yolo" pkg="artag_follower" type="follower.py" output="screen"/>
+    <node name="move_yolo" pkg="move_base_yolo" type="move_base.py" output="screen"/>
 
 </launch>

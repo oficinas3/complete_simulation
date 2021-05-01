@@ -68,7 +68,7 @@
     </group>
 
     <group ns="person">
-        <param name="person_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/person.urdf.xacro artag:=$(arg artag_1)" />
+        <param name="person_description" command="$(find xacro)/xacro $(find followyollo_simulation)/urdf/person.urdf.xacro artag:=$(arg artag_1) isUser:=true" />
         <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model person -x $(arg x_pos_person) -y $(arg y_pos_person) -z $(arg z_pos_person) -Y 3.14 -param person_description" />
     </group>
 
