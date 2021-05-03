@@ -27,7 +27,7 @@
     <arg name="y_pos_3" default="-7.2"/>
 
     <!-- Position arguments for person -->
-    <arg name="x_pos_person" default="9"/>
+    <arg name="x_pos_person" default="8.5"/>
     <arg name="y_pos_person" default="-6"/>
     <arg name="z_pos_person" default="1"/>
     <arg name="artag_1" default="package://followyollo_simulation/meshes/ARTag0.dae"/>
